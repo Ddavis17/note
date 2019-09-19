@@ -3,9 +3,11 @@ import logo from './logo.svg';
 import './App.css';
 import Nav from './components/Nav';
 import List from './components/List';
-import Note from './components/Note'
+import Note from './components/Note';
+import axios from 'axios';
+import urlFor from './helpers/urlFor';
                                           //App is child to React.Component
- class App extends Component{
+ class App extends Component {
   constructor(){
                                           //calling super method allows us to use this keyword, initializes it
     super();
@@ -13,7 +15,8 @@ import Note from './components/Note'
                                           //React will call the render method on the comp. and apply changes
     this.state = {
                                           //React will render Note comp if true, List comp. if false
-      showNote: false
+      showNote: false,
+      notes: []
     };
   }
                                 //In order to change the value of a comp. state, setState method will be used
@@ -25,17 +28,23 @@ import Note from './components/Note'
     });
   }
 
+  getNotes = () => {
+    axios.get(urlFor('notes'))
+    .then((res) => this.setState({notes: res.data}) )
+    .catch((err) => console.log(err.response.data) );
+  } 
+
    render(){
                                         //using object Destructuring, we made the indiv key accessable 
                                         //this.state.showNote = the method used and using showNote as the vari.
-    const { showNote } = this.state;
+    const { showNote, notes } = this.state;
 
     return (
       <div className="App">
        <Nav toggleNote={this.toggleNote} showNote={showNote} />
                                         {/* state = either (list out the notes) or (interact with 1 single note) */}
                                         {/* if showNote is T, run Note comp.,, if F, run List comp. */}
-      { showNote ? <Note /> : <List /> } 
+      { showNote ? <Note /> : <List  getNotes={this.getNotes} /> } 
       </div>
     );
   }
