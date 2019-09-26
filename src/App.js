@@ -62,10 +62,10 @@ import Flash from './components/Flash'
     .then((res) => this.setState({ showNote: false }))
     .catch((err) => {
       const { errors } = err.response.data;
-      if (errors.content){
+      if (errors.content) {
         this.setState({ error: "Missing Note Content!" });
       } else if (errors.title) {
-        this.setState({  error: "Missing Note Title" })
+        this.setState({  error: "Missing Note Title" });
       }
     });
   }
@@ -98,7 +98,7 @@ import Flash from './components/Flash'
 
     deleteTag = (noteId, id) => {
       axios.delete(urlFor(`/tags/${id}`))
-      .then((res) => this.getNote(noteId)
+      .then((res) => this.getNote(noteId) )
       .catch((err) => console.log(err.response.data));
     }
 
